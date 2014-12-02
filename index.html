@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PhoneGap Application</title>
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript">
+
+    var WatchID =  null;
+    // Wait for PhoneGap to load
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // PhoneGap is ready
+    function onDeviceReady() {
+        startWatch();
+    }
+    
+    function startWatch(){
+        var options = {frequency: 3000}; // objeto JSON => 3s para refresh
+        watchID = navigator.accelerometer.watchAcceleration(onSuccess,onError,options);
+    }
+    
+    function stopWatch(){
+        if(watchID){ //este if implica se existe um watchID pois inicializámo-lo a null
+            navigator.acceleromter.clearWatch(watchID);
+            watchID = null;
+        }
+    }
+    
+    function onSuccess(acceleration){
+        var element = document.getElementById('accelerometer')
+		//innerHTML => escreve dentro do elemento (neste caso o elemento é o div accelerometer)
+        element.innerHTML = 'Acceleration X: '+ acceleration.x + '<br />'+
+                            'Acceleration Y: '+ acceleration.y + '<br />'+
+                            'Acceleration Z: '+ acceleration.z + '<br />'+
+                            'Timestamp: '     + acceleration.timestamp + '<br />';
+                            
+    }
+    
+    function onError(){
+        alert('There was a problem');
+    }
+
+    </script>
+  </head>
+  <body>
+      <div id="accelerometer">Waiting for accelerometer..</div>
+  </body>
+</html>
